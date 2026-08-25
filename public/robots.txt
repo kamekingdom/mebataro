@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /project-manager
+
+Sitemap: https://mebataro.web.app/sitemap.xml

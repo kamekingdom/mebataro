@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "prebuild": "node scripts/generate-sitemap.mjs",
+    "postbuild": "node scripts/generate-seo-pages.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview"

@@ -17,6 +17,7 @@ import {
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { auth, db, storage } from "./firebase";
 import { ingredientOptions, ingredientTags } from "./ingredients";
+import { setHomeSeo, setManagerSeo, setRecipeSeo } from "./seo";
 
 type Category = "ごはん" | "おかず" | "おやつ" | "その他";
 type Recipe = {
@@ -210,14 +211,24 @@ function useRecipes() {
 function Card({ recipe, open }: { recipe: Recipe; open: () => void }) {
   const hasTime = Boolean(recipe.time?.trim() && recipe.time.trim() !== "—");
   return (
-    <button
+    <a
       className="recipe-card"
-      onClick={open}
+      href={`/recipes/${encodeURIComponent(recipe.id)}`}
+      onClick={(event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+          return;
+        event.preventDefault();
+        open();
+      }}
       aria-label={`${recipe.title}を見る`}
     >
       <div className="recipe-picture" style={{ background: recipe.color }}>
         {recipe.imageUrl ? (
-          <img src={recipe.imageUrl} alt="" loading="lazy" />
+          <img
+            src={recipe.imageUrl}
+            alt={`${recipe.title}の完成写真`}
+            loading="lazy"
+          />
         ) : (
           <span className="food-icon">{recipe.icon}</span>
         )}
@@ -234,7 +245,7 @@ function Card({ recipe, open }: { recipe: Recipe; open: () => void }) {
           <b>→</b>
         </div>
       </div>
-    </button>
+    </a>
   );
 }
 
@@ -367,16 +378,44 @@ function PublicSite() {
     [source, query, category, selectedIngredients],
   );
   const visibleRecipes = shown.slice(0, visibleCount);
+  useEffect(() => {
+    const syncRecipeFromUrl = () => {
+      const match = location.pathname.match(/^\/recipes\/([^/]+)$/);
+      if (!match) {
+        setSelected(null);
+        return;
+      }
+      const recipeId = decodeURIComponent(match[1]);
+      const recipe = recipes.find((item) => item.id === recipeId);
+      if (recipe) setSelected(recipe);
+    };
+    syncRecipeFromUrl();
+    window.addEventListener("popstate", syncRecipeFromUrl);
+    return () => window.removeEventListener("popstate", syncRecipeFromUrl);
+  }, [recipes]);
+  useEffect(() => {
+    if (selected) setRecipeSeo(selected);
+    else setHomeSeo(recipes);
+  }, [selected, recipes]);
+  const openRecipe = (recipe: Recipe) => {
+    history.pushState({}, "", `/recipes/${encodeURIComponent(recipe.id)}`);
+    setSelected(recipe);
+  };
+  const closeRecipe = () => {
+    if (location.pathname.startsWith("/recipes/"))
+      history.pushState({}, "", "/");
+    setSelected(null);
+  };
   return (
     <>
       <header>
-        <a className="logo" href="#top">
+        <a className="logo" href="/">
           <small>MEBAE'S</small>
           <strong>KITCHEN</strong>
         </a>
         <nav>
-          <a href="#recipes">Recipes</a>
-          <a href="#about">About</a>
+          <a href="/#recipes">Recipes</a>
+          <a href="/#about">About</a>
         </nav>
       </header>
       <main id="top">
@@ -393,9 +432,13 @@ function PublicSite() {
               <br />
               お気に入りのレシピを集める、小さなキッチンノート。
             </p>
-            <a href="#recipes">レシピを見る　↓</a>
+            <a href="/#recipes">レシピを見る　↓</a>
           </div>
-          <div className="hero-plate">
+          <div
+            className="hero-plate"
+            role="img"
+            aria-label="木べらを持って料理を楽しむ亀岡芽生"
+          >
             <b className="tomato">🍅</b>
             <b className="lemon">🍋</b>
             <b className="herb">🌿</b>
@@ -574,7 +617,7 @@ function PublicSite() {
             <>
               <div className="grid">
                 {visibleRecipes.map((r) => (
-                  <Card key={r.id} recipe={r} open={() => setSelected(r)} />
+                  <Card key={r.id} recipe={r} open={() => openRecipe(r)} />
                 ))}
               </div>
               {visibleCount < shown.length && (
@@ -617,9 +660,7 @@ function PublicSite() {
         <a href="/project-manager">PROJECT MANAGER</a>
         <p>© 2026 KAMEOKA MEBAE</p>
       </footer>
-      {selected && (
-        <RecipeDetail recipe={selected} close={() => setSelected(null)} />
-      )}
+      {selected && <RecipeDetail recipe={selected} close={closeRecipe} />}
     </>
   );
 }
@@ -956,6 +997,7 @@ function Manager() {
     () => ingredientOptions(recipes).map(({ name }) => name),
     [recipes],
   );
+  useEffect(() => setManagerSeo(), []);
   const verify = async (u: User | null) => {
     setUser(u);
     setIsAdmin(Boolean(u && ADMIN_UIDS.has(u.uid)));

@@ -30,6 +30,14 @@ npm run dev
 - Storage: レシピ画像
 - Authentication: 管理画面のメール／パスワード認証
 
+## SEO
+
+- レシピごとの静的URL・OGP
+- Recipe / ItemList / BreadcrumbList構造化データ
+- Firestore連動のXMLサイトマップ
+- robots.txtと管理画面のnoindex
+- canonical URLとSNS共有用メタデータ
+
 ```bash
 npm run build
 firebase deploy
