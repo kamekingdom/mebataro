@@ -4,7 +4,7 @@ const AUTHOR_ID = `${SITE_URL}/#mebae`;
 const DEFAULT_IMAGE =
   "https://firebasestorage.googleapis.com/v0/b/mebataro.firebasestorage.app/o/site-assets%2Fog-image.jpg?alt=media";
 const DEFAULT_DESCRIPTION =
-  "亀岡芽生のお気に入り料理を、写真・材料・作り方とともにまとめたレシピノート。料理名や複数の材料からレシピを検索できます。";
+  "芽生のお気に入り料理を、写真・材料・作り方とともにまとめたレシピノート。料理名や複数の材料からレシピを検索できます。";
 
 type SeoRecipe = {
   id: string;
@@ -105,8 +105,8 @@ function personSchema() {
     "@context": "https://schema.org",
     "@type": "Person",
     "@id": AUTHOR_ID,
-    name: "亀岡芽生",
-    alternateName: "Kameoka Mebae",
+    name: "芽生",
+    alternateName: "Mebae",
     url: `${SITE_URL}/`,
   };
 }
@@ -118,7 +118,7 @@ function websiteSchema() {
     "@id": `${SITE_URL}/#website`,
     url: `${SITE_URL}/`,
     name: SITE_NAME,
-    alternateName: "亀岡芽生のレシピノート",
+    alternateName: "芽生のレシピノート",
     inLanguage: "ja",
     author: { "@id": AUTHOR_ID },
   };
@@ -132,9 +132,9 @@ function isoDuration(value: string) {
 }
 
 export function setHomeSeo(recipes: SeoRecipe[]) {
-  const title = "亀岡芽生のレシピノート | Mebae's Kitchen";
+  const title = "芽生のレシピノート | Mebae's Kitchen";
   const description = recipes.length
-    ? `亀岡芽生のお気に入り料理${recipes.length}品を、写真・材料・作り方とともにまとめたレシピノート。料理名や複数の材料から検索できます。`
+    ? `芽生のお気に入り料理${recipes.length}品を、写真・材料・作り方とともにまとめたレシピノート。料理名や複数の材料から検索できます。`
     : DEFAULT_DESCRIPTION;
   applyMeta({ title, description, url: `${SITE_URL}/` });
   setMeta(
@@ -169,7 +169,7 @@ export function setHomeSeo(recipes: SeoRecipe[]) {
       "@type": "CollectionPage",
       "@id": `${SITE_URL}/#recipes`,
       url: `${SITE_URL}/`,
-      name: "亀岡芽生のレシピ一覧",
+      name: "芽生のレシピ一覧",
       description,
       inLanguage: "ja",
       isPartOf: { "@id": `${SITE_URL}/#website` },
@@ -191,7 +191,7 @@ export function setRecipeSeo(recipe: SeoRecipe) {
   const url = `${SITE_URL}/recipes/${encodeURIComponent(recipe.id)}`;
   const description = `${recipe.title}の材料と作り方。${recipe.ingredients
     .slice(0, 5)
-    .join("、")}などを使った亀岡芽生のレシピです。`.slice(0, 155);
+    .join("、")}などを使った芽生のレシピです。`.slice(0, 155);
   const title = `${recipe.title}のレシピ | Mebae's Kitchen`;
   applyMeta({
     title,

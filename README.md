@@ -1,6 +1,6 @@
 # Mebae's Kitchen
 
-亀岡芽生のレシピをまとめる、React + TypeScript製のポートフォリオ／レシピサイトです。
+芽生のレシピをまとめる、React + TypeScript製のポートフォリオ／レシピサイトです。
 
 公開サイト: [https://mebataro.web.app](https://mebataro.web.app)
 

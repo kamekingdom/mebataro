@@ -421,7 +421,7 @@ function PublicSite() {
       <main id="top">
         <section className="hero">
           <div className="hero-copy">
-            <p className="kicker">KAMEOKA MEBAE'S RECIPE NOTE</p>
+            <p className="kicker">MEBAE'S RECIPE NOTE</p>
             <h1>
               おいしいを、
               <br />
@@ -437,7 +437,7 @@ function PublicSite() {
           <div
             className="hero-plate"
             role="img"
-            aria-label="木べらを持って料理を楽しむ亀岡芽生"
+            aria-label="木べらを持って料理を楽しむ芽生"
           >
             <b className="tomato">🍅</b>
             <b className="lemon">🍋</b>
@@ -651,14 +651,14 @@ function PublicSite() {
           <p>
             特別な日のごちそうも、いつもの朝ごはんも。
             <br />
-            亀岡芽生のお気に入りを、少しずつ集めています。
+            芽生のお気に入りを、少しずつ集めています。
           </p>
         </section>
       </main>
       <footer>
         <p>MEBAE'S KITCHEN</p>
         <a href="/project-manager">PROJECT MANAGER</a>
-        <p>© 2026 KAMEOKA MEBAE</p>
+        <p>© 2026 MEBAE</p>
       </footer>
       {selected && <RecipeDetail recipe={selected} close={closeRecipe} />}
     </>

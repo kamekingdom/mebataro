@@ -45,15 +45,15 @@ function baseSchemas() {
       "@id": `${siteUrl}/#website`,
       url: `${siteUrl}/`,
       name: siteName,
-      alternateName: "亀岡芽生のレシピノート",
+      alternateName: "芽生のレシピノート",
       inLanguage: "ja",
     },
     {
       "@context": "https://schema.org",
       "@type": "Person",
       "@id": `${siteUrl}/#mebae`,
-      name: "亀岡芽生",
-      alternateName: "Kameoka Mebae",
+      name: "芽生",
+      alternateName: "Mebae",
       url: `${siteUrl}/`,
     },
   ];
@@ -82,7 +82,7 @@ const recipes = (data.documents || []).map((document) => ({
 }));
 
 let indexHtml = await readFile("dist/index.html", "utf8");
-const homeDescription = `亀岡芽生のお気に入り料理${recipes.length}品を、写真・材料・作り方とともにまとめたレシピノート。料理名や複数の材料から検索できます。`;
+const homeDescription = `芽生のお気に入り料理${recipes.length}品を、写真・材料・作り方とともにまとめたレシピノート。料理名や複数の材料から検索できます。`;
 indexHtml = setMeta(indexHtml, "name", "description", homeDescription);
 indexHtml = setMeta(indexHtml, "property", "og:description", homeDescription);
 indexHtml = setJsonLd(indexHtml, [
@@ -92,7 +92,7 @@ indexHtml = setJsonLd(indexHtml, [
     "@type": "CollectionPage",
     "@id": `${siteUrl}/#recipes`,
     url: `${siteUrl}/`,
-    name: "亀岡芽生のレシピ一覧",
+    name: "芽生のレシピ一覧",
     description: homeDescription,
     inLanguage: "ja",
     mainEntity: {
@@ -115,7 +115,7 @@ for (const recipe of recipes) {
   const title = `${recipe.title}のレシピ | ${siteName}`;
   const description = `${recipe.title}の材料と作り方。${recipe.ingredients
     .slice(0, 5)
-    .join("、")}などを使った亀岡芽生のレシピです。`.slice(0, 155);
+    .join("、")}などを使った芽生のレシピです。`.slice(0, 155);
   const recipeDuration = duration(recipe.time);
   const recipeSchema = {
     "@context": "https://schema.org",
